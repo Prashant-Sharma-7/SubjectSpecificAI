@@ -1,0 +1,246 @@
+/* CONTAINER */
+.paper-gen-container {
+    min-height: 100vh;
+    width: 100vw;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+
+.cancel-cross{
+    position: fixed;
+    top: 4.5%;
+    right: 3.2%;
+
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 10rem;
+    border: 1px solid rgb(158, 158, 158);
+    background-color: #000000;
+    color: rgb(158, 158, 158);
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+
+}
+
+.cancel-cross:hover{
+    border: 2px solid #3D1A43;
+    box-shadow: 0 0 15px #3D1A43;
+    color: white;
+}
+
+/* MODAL */
+.pg-modal-box {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.pg-modal-box h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+}
+
+/* FORM */
+.pg-form-group {
+    margin-bottom: 24px;
+}
+
+.pg-form-group label {
+    font-size: 0.8rem;
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* CAPSULE GRID */
+.capsule-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 10px;
+}
+
+.capsule {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 12px;
+    border-radius: 10rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #b6b6b6;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.capsule:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.capsule.active {
+    background: #9d4edd1c  ;
+    border-color: #D8B4FE  ;
+    color: white;
+}
+
+.capsule-dot {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+}
+
+/* SEGMENT CONTROL */
+.segmented-control {
+    position: relative;
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 100px;
+    padding: 12px;
+    margin-top: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.segment-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #b6b6b6;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.segment-btn.active {
+    color: rgb(0, 0, 0);
+}
+
+.selection-pill {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: #9D4EDD  ;
+    border-radius: 100px;
+    transition: 0.3s;
+}
+
+.selection-pill.shift-right {
+    transform: translateX(100%);
+}
+
+/* INPUT */
+.pg-form-group input {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    cursor: pointer;
+}
+
+/* BUTTON */
+.pg-generate-btn {
+    width: 70%;
+    min-width: 200px;
+    margin-left: 15%;
+    margin-top: 10px;
+    padding: 8px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    border: none;
+    background-color: #9D4EDD;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.pg-generate-btn:hover:not(:disabled) {
+    transform: scale(1.02);
+}
+
+.pg-generate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+@media (max-width: 768px) {
+    .pg-modal-box {
+        width: 95%;
+        padding: 25px 20px;
+        margin-top: 40px; /* Space for the cancel cross */
+        border-radius: 16px;
+    }
+
+    .pg-modal-box h2 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+
+    /* Stack capsules in a single column on mobile */
+    .capsule-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.8rem;
+    }
+
+    .capsule {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; 
+        display: flex;
+        align-items: center;
+        padding: 10px 12px;
+    }
+
+    /* Make the cancel button slightly smaller for phones */
+    .cancel-cross {
+        top: 2%;
+        right: 5%;
+        height: 2.2rem;
+        width: 2.2rem;
+    }
+
+    /* Make buttons and inputs easier to tap */
+    .pg-generate-btn {
+        width: 100%;
+        margin-left: 0;
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+
+    .segmented-control {
+        padding: 8px;
+    }
+
+    .pg-form-group input {
+        height: 80px; /* Slightly shorter box for mobile */
+    }
+}
+
+/* For very small screens (iPhone SE, etc) */
+@media (max-width: 400px) {
+    .pg-modal-box {
+        padding: 20px 15px;
+    }
+    
+    .segment-btn {
+        font-size: 0.85rem;
+    }
+}

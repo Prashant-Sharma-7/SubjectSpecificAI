@@ -1,0 +1,473 @@
+.home-bg{
+    min-height: 100vh;
+    background-color:black;
+    padding-top: 0.7rem;
+    padding-bottom: 3rem;
+    position: relative;
+}
+.home-bg > div:first-child {   /* targets the absolute wrapper */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 97%;
+    margin: 0 auto;
+    padding: 0.4rem 1.1rem;
+    border-radius: 3rem;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+
+    border: 1px solid #3D1A43;
+
+    box-shadow: 0 4px 16px #3d1a4389;
+    z-index: 1000;
+}
+.Ailogo{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+.Ailogo img{
+    height: 100%;
+    object-fit: cover;
+}
+.functions{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.fn-button{
+    background:transparent ;
+    padding: 0.24rem 1rem;
+    border-radius: 50px;
+    border: 1.5px solid #3D1A43;
+    cursor: pointer;
+}
+.fn-button:hover{
+    background-color: #9D4EDD;
+    color: #000;
+}
+.mobile-bottom-dock {
+    display: none; /* Hidden on PC */
+}
+.profile-wrapper {
+    position: relative;
+}
+
+.mobile-menu-icon {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+.mobile-menu {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background: black;
+    border: 1px solid #3D1A43;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobile-menu button {
+    background: transparent;
+    border: 1px solid #3D1A43;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.profile-photo {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #3d1a43;
+    background-color: #3d1a436a;
+    color: #9D4EDD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+.profile-photo:hover{
+    box-shadow: 0 0 10px #3D1A43;
+    background-color: #9D4EDD;
+    color: #000;
+    
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: #000000;
+    border: 1px solid #3d1a43;
+    border-radius: 10px;
+    padding: 10px;
+    width: 200px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    z-index: 10;
+}
+
+.profile-email {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.logout-btn {
+    width: 100%;
+    background: #9D4EDD;
+    color: black;
+    font-weight: 700;
+    border: none;
+    padding: 8px;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+.home-heading {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin: 2rem 0 3rem;
+    letter-spacing: -1px;
+    color: #fff;
+}
+
+.card-container {
+    width: 90vw;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    gap: 2.2rem;
+}
+.empty-state {
+    margin-top: 80px;
+    color: #d8d8d8;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.empty-state button {
+    margin-top: 1.5rem;
+    padding: 8px 20px;
+    border-radius: 50px;
+    background: #9D4EDD;
+    color: #000000;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+}
+
+.sub-box {
+    border: 2px solid #3d1a43ba;
+    border-radius: 1.6rem;
+    height: 210px;
+    display: flex;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(63, 63, 63, 0.141);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    
+}
+
+.sub-box:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: #3D1A43;
+    box-shadow: 0px 0px 20px rgba(157, 78, 221, 0.35);
+}
+
+.img-container {
+    width: 26%;
+    height: 100%;
+    position: relative;
+    border-top-left-radius: 1.4rem;
+    border-bottom-left-radius: 1.4rem;
+    overflow: hidden;
+}
+
+.img-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    transition: transform 0.5s ease;
+}
+
+.sub-box:hover .img-container img {
+    transform: scale(1.12);
+}
+
+.img-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.416), rgba(0, 0, 0, 0.247));
+    border-radius: inherit;
+}
+
+.info-container {
+    padding: 1rem 1.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.3rem;
+}
+
+.sub-name {
+    font-size: 1.95rem;
+    font-weight: 700;
+    
+    color: #fff;
+}
+.attachment-detail {
+    background: transparent;
+    border: 1px solid #ffffff84;
+    color: #ffffff84;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+
+}
+
+.last-detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 1.8rem;
+}
+
+.last-msg {
+    font-style: italic;
+}
+
+.card-functions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.208);
+    padding-top: 1rem;
+}
+
+
+
+.view-btn {
+    background: transparent;
+    border: 1.5px solid #9D4EDD;
+    border: 2px solid #3d1a43;
+    color: #ffffffb0;
+    padding: 0.35rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    
+}
+.view-btn:hover {
+    /* background: #3b82f6; */
+    background-color: #9D4EDD;
+    color: black;
+    box-shadow: 0 0 12px #3d1a43;
+}
+
+.del-btn{
+    cursor: pointer;
+    color: rgba(180, 33, 33, 0.649);
+}
+.del-btn:hover{
+    color: rgb(198, 40, 40);
+}
+
+.success-banner {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #10b981; /* Premium Emerald Green */
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px; /* Pill shape looks more modern */
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.delete-banner {
+    background-color: #ef4444 !important; /* Premium Red */
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+
+@keyframes slideUpMobile {
+    from {
+        bottom: 50px;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.9);
+    }
+    to {
+        bottom: 100px;
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        top: -50px;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+/* Scrollbar width */
+.home-bg::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track (background) */
+.home-bg::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Thumb (the draggable part) */
+.home-bg::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+/* Hover effect */
+.home-bg::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+
+/* Responsive */
+@media (max-width: 992px) {
+    .sub-box { height: 200px; }
+}
+
+@media (max-width: 768px) {
+    .success-banner {
+        top: auto;        /* Remove top positioning */
+        bottom: 100px;    /* Float it above the bottom dock */
+        width: 85%;       /* Don't hit the screen edges */
+        max-width: 350px;
+        font-size: 0.9rem;
+        padding: 10px 20px;
+        justify-content: center;
+        animation: slideUpMobile 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+    .home-heading { font-size: 2rem; }
+    
+    .desktop-only {
+        display: none !important;
+    }
+ 
+
+    /* Floating Bottom Dock Styling */
+    .mobile-bottom-dock {
+        display: flex;
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 85%;
+        max-width: 380px;
+        background: rgba(15, 15, 15, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 8px;
+        border-radius: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+        z-index: 2000;
+        gap: 8px;
+    }
+
+    .dock-btn {
+        flex: 1;
+        padding: 10px 5px;
+        border-radius: 50px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.1s active;
+    }
+
+    /* Main Action (New Sub) */
+    .main-action {
+        background: #9D4EDD;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .plus-icon {
+        font-size: 1.2rem;
+        line-height: 0;
+    }
+
+    /* Secondary Action (Generate Imp) */
+    .secondary-action {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Ensure cards don't get cut off by the dock */
+    .home-bg {
+        padding-bottom: 120px;
+    }
+}

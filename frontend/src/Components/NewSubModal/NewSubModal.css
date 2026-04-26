@@ -1,0 +1,169 @@
+.home-modal-overlay {
+    position: fixed; /* Ensures it covers the whole screen, even if scrolled */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.home-modal-box {
+    background: #060606;
+    padding: 2.5rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid #3d1a43;
+    position: relative;
+    color: white;
+}
+
+.home-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.home-modal-close:hover {
+    color: #9D4EDD;
+}
+
+.home-modal-box h2 {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 1.7rem;
+}
+
+.home-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2.2rem;
+}
+
+.home-form-group label {
+    margin-bottom: 0.5rem;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.home-form-group input {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #111;
+    color: white;
+    font-size: 1rem;
+}
+
+.home-form-group input:focus {
+    outline: none;
+    border-color: #3d1a43;
+}
+
+/* Color Picker Circles */
+.color-picker-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+}
+
+.color-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s;
+}
+
+.color-circle:hover {
+    transform: scale(1.15);
+}
+
+.color-circle.active {
+    border: 2px solid #3d1a43;
+    transform: scale(1.2);
+    box-shadow: 0 0 15px #3d1a43;
+}
+
+.home-create-btn {
+    /* width: 50%; */
+    padding: 0.7rem 2.5rem;
+    background-color: #9d4eddae;
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin: 1rem auto 0;
+    display: block;
+}
+
+.home-create-btn:hover {
+    background-color: #9d4edd;
+}
+
+@media (max-width: 768px) {
+    .home-modal-box {
+        width: 92%;
+        padding: 1.8rem 1.2rem; /* Reduced padding for mobile */
+        border-radius: 20px;
+    }
+
+    .home-modal-box h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .home-form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Adjust color picker for smaller screens */
+    .color-picker-container {
+        gap: 0.8rem;
+        justify-content: center; /* Center them for a better mobile look */
+    }
+
+    .color-circle {
+        width: 35px; /* Slightly smaller circles */
+        height: 35px;
+    }
+
+    .home-create-btn {
+        width: 100%; /* Full width button for easier thumb access */
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .home-modal-close {
+        top: 5px;
+        right: 15px;
+        font-size: 1.8rem;
+    }
+}
+
+/* For very small devices */
+@media (max-width: 400px) {
+    .color-circle {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .color-picker-container {
+        gap: 0.6rem;
+    }
+}

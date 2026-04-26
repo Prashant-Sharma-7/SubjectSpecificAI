@@ -1,0 +1,371 @@
+.msg-area {
+    background-color: rgb(0, 0, 0);
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto; 
+
+}
+.msg-wrapper{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.chat-spacer {
+    height: 20vh;
+    flex-shrink: 0;
+}
+
+.user {
+    background-color: #1b1b1b;
+    color: #ececec;
+    padding: 0.75rem 1.25rem;
+    border-radius: 1.5rem;
+    border: 1px solid #3d1a43;
+    max-width: 50%;
+    align-self: flex-end; 
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    border-top-right-radius: 0.5rem;
+}
+
+.bot {
+    width: 100%;
+    max-width: 750px; 
+    color: #d1d5db;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+    
+}
+
+.ans-loader {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.ans-loader span {
+    width: 5px;
+    height: 5px;
+    background-color: #aaa;
+    border-radius: 50%;
+    animation: blink 1.4s infinite;
+}
+
+.ans-loader span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.ans-loader span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%, 80%, 100% {
+        opacity: 0.2;
+    }
+    40% {
+        opacity: 1;
+    }
+}
+
+.error-msg {
+    background: #7f1d1d;
+    color: #fecaca;
+    padding: 10px 14px;
+    border-radius: 10px;
+    max-width: fit-content;
+    margin: 5px 0;
+    font-size: 14px;
+}
+.retry-btn {
+    margin-left: 10px;
+    background: #1d4ed8;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.yt-container {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+/* Video Card */
+.yt-card {
+    flex: 1 1 240px; /* Fixed width, won't shrink */
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.yt-card:hover {
+    background: rgba(157, 78, 221, 0.05);
+    border-color: #9D4EDD;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(157, 78, 221, 0.15);
+}
+
+/* Thumbnail Wrapper (Forces 16:9 aspect ratio) */
+.yt-thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+.yt-thumbnail-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.yt-card:hover .yt-thumbnail-wrapper img {
+    transform: scale(1.08); /* Slight zoom on hover */
+}
+
+/* Play Icon Overlay */
+.yt-play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.yt-card:hover .yt-play-overlay {
+    opacity: 1;
+}
+
+.yt-play-overlay svg {
+    color: #fff;
+    font-size: 2.5rem;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+    transition: transform 0.2s ease;
+}
+
+.yt-card:hover .yt-play-overlay svg {
+    transform: scale(1.1);
+}
+
+/* Small YouTube Badge */
+.yt-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ef4444; /* Standard YouTube Red */
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Title Formatting */
+.yt-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #e5e7eb;
+    padding: 10px 12px;
+    line-height: 1.4;
+    
+    /* Truncate text after 2 lines so the cards stay the same height */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* text formatting */
+.msg-area h1,
+.msg-area h2,
+.msg-area h3 {
+    color: #f9fafb;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Hierarchy */
+.msg-area h1 {
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.msg-area h2 {
+    font-size: 1.5rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid #3a3a3a;
+    padding-bottom: 0.3rem;
+}
+
+.msg-area h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* First heading spacing fix */
+.msg-area h1:first-child,
+.msg-area h2:first-child,
+.msg-area h3:first-child {
+    margin-top: 0;
+}
+
+/* Paragraphs */
+.msg-area p {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 0.7rem 0;
+    color: #d1d5db;
+}
+
+/* Better spacing between sections */
+.msg-area h2 + p,
+.msg-area h3 + p {
+    margin-top: 0.5rem;
+}
+
+/* Lists */
+.msg-area ul,
+.msg-area ol {
+    margin: 0 0 1.2rem 0;
+    padding-left: 1.8rem;
+}
+
+.msg-area li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+/* Nested lists */
+.msg-area li > ul,
+.msg-area li > ol {
+    margin-top: 0.5rem;
+}
+
+/* Bold text */
+.msg-area strong {
+    color: #f3f4f6;
+    font-weight: 600;
+}
+
+/* Code blocks */
+.msg-area code {
+    background-color: #374151;
+    color: #e5e7eb;
+    padding: 0.25em 0.45em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+.msg-area pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Blockquotes */
+.msg-area blockquote {
+    border-left: 4px solid #888;
+    margin: 1em 0;
+    padding-left: 1em;
+    color: #a3a3a3;
+}
+
+/* Tables */
+.msg-area table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+}
+
+.msg-area th, .msg-area td {
+    border: 1px solid #555;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.msg-area th {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Scrollbar width */
+/* This targets the main browser scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+
+
+@media (max-width: 768px) {
+    .msg-area {
+        padding: 1rem;
+    }
+
+    .msg-wrapper {
+        width: 100%;
+    }
+
+    .user {
+        max-width: 85%;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .bot {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .yt-card {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+.chat-bg {
+    background-color: rgb(0, 0, 0);
+    height: 100vh;
+    display: flex;
+}
+
+.chat-area {
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+    contain: layout;
+}
+
+.mobile-navbar{
+    display: none; 
+    justify-content: space-between;
+    align-items: center;
+
+    width: 97vw;
+    margin: 0 auto;
+    margin-top: 0.7rem;
+    padding: 0.4rem 1.1rem;
+    border-radius: 3rem;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+    border: 1px solid #3D1A43;
+
+    box-shadow: 0 4px 16px #3d1a4389;
+
+    z-index: 10;
+}
+.hamburger-btn {
+    background: none;
+    border: none;
+    color: #e5e7eb;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+.navbar-title {
+    color: white;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+}
+
+.profile-icon {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .mobile-navbar {
+        display: flex; /* Makes it visible and applies flexbox */
+        margin-bottom: 0.5rem;
+    }
+    .navbar-title {
+        font-size: 0.95rem; /* Smaller font for long subject names */
+    }
+}
+

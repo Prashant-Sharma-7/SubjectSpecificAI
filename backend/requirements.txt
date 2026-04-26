@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+langchain-community
+langchain-huggingface
+langchain-pinecone
+langchain-text-splitters
+pinecone-client
+groq
+google-genai
+pdf2image
+cloudinary
+motor
+python-dotenv
+requests
