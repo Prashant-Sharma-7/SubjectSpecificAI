@@ -119,7 +119,7 @@ export default function Home({ subjects, onOpenModal, onDeleteSubject, user }) {
             <div className="relative z-10">
                 <div className="navbar">
                     <div className="Ailogo">
-                        <img src="/testlogo.png" alt="Logo" />
+                        <img src="/testLogo.png" alt="Logo" />
                     </div>
 
                     {/* DESKTOP ONLY BUTTONS */}
