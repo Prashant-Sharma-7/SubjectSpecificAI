@@ -29,6 +29,7 @@ const availableColors = ["#A8DADC", "#B2F2BB", "#FFC1CC", "#B39CD0", "#FFD6A5", 
 export default function App() {
 
     const [subjects, setSubjects] = useState([]);
+    const [subjectsLoaded, setSubjectsLoaded] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [newSubName, setNewSubName] = useState("");
 
@@ -65,9 +66,10 @@ export default function App() {
     useEffect(() => {
         if (!user) return;
         const loadData = async () => {
-            console.log(user);
+            setSubjectsLoaded(false);
             const dbSubjects = await fetchSubjects(user.uid);
             setSubjects(dbSubjects);
+            setSubjectsLoaded(true);
         };
         loadData();
     }, [user]);
@@ -165,6 +167,7 @@ export default function App() {
                     <Route path="/"  element={
                         <Home 
                         subjects={subjects} 
+                        subjectsLoaded={subjectsLoaded}
                         onOpenModal={() => setShowModal(true)} 
                         onDeleteSubject={triggerDeleteModal}
                         user={user}

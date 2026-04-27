@@ -12,7 +12,7 @@ import Particles from "../../blocks/background/Particles/Particles.jsx";
 
 
 
-export default function Home({ subjects, onOpenModal, onDeleteSubject, user }) {
+export default function Home({ subjects,subjectsLoaded, onOpenModal, onDeleteSubject, user }) {
     const navigate = useNavigate();
     const profileRef = useRef();
 
@@ -39,7 +39,7 @@ export default function Home({ subjects, onOpenModal, onDeleteSubject, user }) {
     }, []);
 
     useEffect(() => {
-        if (!user) return;
+        if (!user || !subjectsLoaded) return;
 
         const fetchAllData = async () => {
             try {
