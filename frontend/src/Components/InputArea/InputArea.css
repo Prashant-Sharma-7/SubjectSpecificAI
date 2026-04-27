@@ -94,9 +94,9 @@
     position: absolute;
     bottom: 60px; /* Positions right above the button */
     left: 0;
-    /* background: rgba(17, 17, 17, 0.85); */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(56, 56, 56, 0.175);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid #3d1a43;
     border-radius: 16px;
     padding: 8px;

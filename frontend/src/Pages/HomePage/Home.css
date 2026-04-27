@@ -189,9 +189,9 @@
     overflow: hidden;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(63, 63, 63, 0.141);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: rgba(56, 56, 56, 0.175);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     
 }
 

@@ -13,3 +13,5 @@ cloudinary
 motor
 python-dotenv
 requests
+sentence-transformers
+tiktoken
