@@ -13,7 +13,7 @@ cloudinary
 motor
 python-dotenv
 requests
-sentence-transformers
+langchain-google-genai
 tiktoken
 pypdf
 Pillow
