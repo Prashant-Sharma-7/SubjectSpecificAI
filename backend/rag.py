@@ -499,6 +499,7 @@ def ocr_pdf(pdf_path):
         
         full_text = ""
         batch_size = 3 # Process 3 pages at a time to stay under the 15 Requests/Min limit
+        max_retries = 3
         
         for i in range(0, len(pages), batch_size):
             batch = pages[i : i + batch_size]
@@ -514,21 +515,33 @@ def ocr_pdf(pdf_path):
             # Combine the prompt and all images in this batch into one payload
             contents = [prompt] + batch
             
-            try:
-                response = gemini_client.models.generate_content(
-                    model='gemini-2.5-flash',
-                    contents=contents
-                )
-                full_text += f"\n\n--- Pages {i+1} to {end_page} ---\n\n" + response.text
-                
-                # If there are still more pages to process, pause for 5 seconds to cool down the API
-                if end_page < len(pages):
-                    print("   ⏳ Pausing for 5 seconds to respect API rate limits...")
-                    time.sleep(8)
+            success = False
+            for attempt in range(max_retries):
+                try:
+                    response = gemini_client.models.generate_content(
+                        model='gemini-2.5-flash',
+                        contents=contents
+                    )
+                    full_text += f"\n\n--- Pages {i+1} to {end_page} ---\n\n" + response.text
+                    success = True # It worked!
                     
-            except Exception as e:
-                print(f"Error on batch {i+1}-{end_page}: {e}")
-                raise e
+                    if end_page < len(pages):
+                        print("   ⏳ Pausing for 8 seconds to respect API rate limits...")
+                        time.sleep(8)
+                        
+                    break # Break out of the retry loop and move to the next batch
+                    
+                except Exception as e:
+                    print(f"⚠️ Warning: Batch {i+1}-{end_page} failed on attempt {attempt + 1}: {e}")
+                    
+                    if attempt < max_retries - 1:
+                        # Wait 10 seconds on the first fail, 20 seconds on the second fail...
+                        wait_time = (attempt + 1) * 10 
+                        print(f"   ⏳ Google servers busy. Waiting {wait_time} seconds before retrying...")
+                        time.sleep(wait_time)
+                    else:
+                        print(f"❌ Batch {i+1}-{end_page} permanently failed after {max_retries} attempts.")
+                        raise e # Only crash if it fails 3 times in a row!
                 
         return full_text.strip()
 
