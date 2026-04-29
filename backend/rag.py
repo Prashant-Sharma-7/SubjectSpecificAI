@@ -478,12 +478,28 @@ def ocr_image(image_path):
         - Do not add any introductory or conversational text, just return the extracted text.
         """
         
-        response = gemini_client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=[prompt, img]
-        )
-        return response.text.strip()
+        max_retries = 3
         
+        # --- THE RETRY LOOP FOR IMAGES ---
+        for attempt in range(max_retries):
+            try:
+                response = gemini_client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=[prompt, img]
+                )
+                return response.text.strip()
+                
+            except Exception as e:
+                print(f"⚠️ Warning: Image OCR failed on attempt {attempt + 1}: {e}")
+                
+                if attempt < max_retries - 1:
+                    wait_time = (attempt + 1) * 10
+                    print(f"   ⏳ Google servers busy. Waiting {wait_time} seconds before retrying...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"❌ Image OCR permanently failed after {max_retries} attempts.")
+                    return "" # Fails gracefully if it strikes out 3 times
+                    
     except Exception as e:
         print("Gemini OCR image error:", e)
         return ""
