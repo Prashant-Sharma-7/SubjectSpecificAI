@@ -36,6 +36,7 @@
     overflow-wrap: break-word;
     word-break: break-word;
     border-top-right-radius: 0.5rem;
+    white-space: pre-wrap;
 }
 
 .bot {

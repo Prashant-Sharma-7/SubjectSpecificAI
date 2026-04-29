@@ -33,9 +33,13 @@ export default function InputArea({handleSend, handleFileUpload, isSending }) {
     };
 
     const triggerSend = () => {
-        if (!text.trim()) return; // Stop if the input is empty
-        handleSend(text, ytEnabled);         // Pass the text up to ChatPage
-        setText("");              // Instantly clear the local input box
+        if (!text.trim()) return;
+        handleSend(text, ytEnabled);   
+        setText("");        
+        
+        // Instantly shrink the text box back to normal size
+        const textarea = document.querySelector(".input-box");
+        if(textarea) textarea.style.height = "auto";
     };
 
     return (
@@ -123,14 +127,25 @@ export default function InputArea({handleSend, handleFileUpload, isSending }) {
                 )}
             </AnimatePresence>
 
-            <input 
+            <textarea 
                 className="input-box" 
-                type="text" 
                 placeholder="Enter Query" 
                 value={text}
                 disabled={isSending}
-                onChange={(e) => setText(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && triggerSend()}
+                rows={1}
+                onChange={(e) => {
+                    setText(e.target.value);
+                    // The Auto-Resize Magic
+                    e.target.style.height = "auto";
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                }}
+                onKeyDown={(e) => {
+                    // Send on Enter, New Line on Shift+Enter
+                    if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        triggerSend();
+                    }
+                }}
             />
             <button className="send-btn" disabled={isSending} onClick={triggerSend}>
                 <FontAwesomeIcon icon={faArrowUp} />

@@ -24,6 +24,7 @@ export default function ChatPage({subjects, onOpenModal, user }) {
     const [history, setHistory] = useState({});
     const [mobileOpen, setMobileOpen] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 
     // This handles replacing the temporary typing bubble with a permanent message
@@ -105,17 +106,17 @@ export default function ChatPage({subjects, onOpenModal, user }) {
         setMessages(prev => [...prev, { 
             id: tempMsgId, 
             type: "bot", 
-            text: `📄 Uploading and processing **${file.name}**... This might take a few seconds.` 
+            text: `⏳ Uploading and processing **${file.name}** in the background... You can continue asking questions!` 
         }]);
 
         try {
             await uploadFile(file, user.uid, subjectId);
-            
-            setMessages(prev => prev.map(msg => 
-                msg.id === tempMsgId 
-                ? { type: "bot", text: `✅ Successfully processed **${file.name}**! You can now ask questions about it.` }
-                : msg
-            ));
+            setRefreshTrigger(prev => prev + 1);
+            // setMessages(prev => prev.map(msg => 
+            //     msg.id === tempMsgId 
+            //     ? { type: "bot", text: `✅ Successfully processed **${file.name}**! You can now ask questions about it.` }
+            //     : msg
+            // ));
 
         } catch (error) {
             console.error(error);
@@ -178,6 +179,7 @@ export default function ChatPage({subjects, onOpenModal, user }) {
                 mobileOpen={mobileOpen}
                 setMobileOpen={setMobileOpen}
                 user={user}
+                refreshTrigger={refreshTrigger}
             />
 
             <div className="chat-area">

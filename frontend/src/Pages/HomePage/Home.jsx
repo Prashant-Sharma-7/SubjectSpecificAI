@@ -192,12 +192,12 @@ export default function Home({ subjects,subjectsLoaded, onOpenModal, onDeleteSub
 
                                     <div className="attachment-detail">
                                         <FontAwesomeIcon icon={faBook} size="sm" /> 
-                                        Attached: {fileCounts[sub.id] || 0}
+                                        <span className="attached-text">Attached</span> {fileCounts[sub.id] || 0}
                                     </div>
                                 </div>
                                 <div className="last-detail">
                                     <p className="last-msg">
-                                        {truncateText(lastMessages[sub.id]?.text, 40) || "No messages yet"}
+                                        {lastMessages[sub.id]?.text || "No messages yet"}
                                     </p>
                                     <p className="last-msg-time">
                                         {lastMessages[sub.id]?.time || ""}

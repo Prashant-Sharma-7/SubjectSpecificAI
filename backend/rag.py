@@ -31,15 +31,20 @@ def sanitize_cloud_name(name: str) -> str:
 
 
 def get_pinecone_vectorstore(subject, user):
-    """Helper function to connect to the specific user+subject namespace"""
     embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001", 
-        google_api_key=os.getenv("GEMINI_API_KEY")
+        model="gemini-embedding-001",
+        output_dimensionality=768
     )
+
     safe_user = sanitize_cloud_name(user)
     safe_subject = sanitize_cloud_name(subject)
     namespace = f"{safe_user}_{safe_subject}"
-    return PineconeVectorStore(index_name=INDEX_NAME, embedding=embeddings, namespace=namespace)
+
+    return PineconeVectorStore(
+        index_name=INDEX_NAME,
+        embedding=embeddings,
+        namespace=namespace
+    )
 
 def save_to_vector(docs, original_filename, subject, user):
     """Saves documents to Pinecone with the filename attached for easy deletion"""
@@ -139,8 +144,11 @@ def generate_answer(query: str, subject_id: str, subject_name: str, user: str, c
 
     IF NO (context does NOT contain the answer OR says "NO STUDY MATERIAL AVAILABLE."):
     - Your response MUST start with EXACTLY this line and nothing before it:
-        **This topic is not found in your {subject_name} notes, but here is a general explanation:**
-    - After that exact phrase, give ONLY a short, simple general explanation.
+        **This topic is not found in your {subject_name} notes.**
+    - Then, immediately give a **clear, detailed, and student-friendly explanation** using your general knowledge.
+    - Make it educational and helpful — like a good tutor would explain in class.
+    - Use proper structure: definitions, key points, examples, and simple analogies where useful.
+    - Use Markdown formatting (## headings, **bold**, bullet points with '-', numbered lists, LaTeX for math if needed).
 
     GENERAL RULES (apply always):
     - Answer directly and conversationally. Never start with "To answer your question", "Let's recall", etc.

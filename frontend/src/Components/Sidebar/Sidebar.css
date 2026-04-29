@@ -100,6 +100,7 @@
     gap: 0.8rem;
 
     min-height: 40px;
+    overflow: hidden;
 }
 
 .sidebar-item:hover {
@@ -123,6 +124,13 @@
 .history .icon-wrapper svg{
     width: 20px;
     height: 20px;
+}
+.sidebar-text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;   
+    min-width: 0; 
 }
 
 .Files-btn{

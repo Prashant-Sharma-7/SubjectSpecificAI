@@ -120,9 +120,9 @@ export const fetchFiles = async(subjectId, user)=>{
         return { files: [] }; 
     }
 }
-export const deleteFile = async (filename, subject, user) => {
+export const deleteFile = async (stored_name, subject, user) => {
     try{
-        const params = new URLSearchParams({ filename, subject, user });
+        const params = new URLSearchParams({ stored_name, subject, user });
         const res = await fetch(`${BASE_URL}/delete-file?${params.toString()}`, { 
             method: "DELETE" 
         });

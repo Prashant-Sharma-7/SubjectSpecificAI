@@ -1,4 +1,4 @@
-import {useEffect, useState, memo} from "react";
+import {useEffect, useState, memo, useRef} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Sidebar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,7 +16,8 @@ const Sidebar = memo(function Sidebar({
     onNew,
     mobileOpen,
     setMobileOpen,
-    user
+    user,
+    refreshTrigger,
 }) {
 
     const [isMobile, setIsMobile] = useState(false);
@@ -25,11 +26,14 @@ const Sidebar = memo(function Sidebar({
     const [filesMap, setFilesMap] = useState({});
     const [deletingFile, setDeletingFile] = useState(null);
 
+    const prevRefreshTrigger = useRef(refreshTrigger);
     useEffect(() => {
         if (!user || !subjectId) return;
         setShowFiles(false);
+        const isNewUpload = refreshTrigger !== prevRefreshTrigger.current;
+        prevRefreshTrigger.current = refreshTrigger;
         const loadFiles = async () => {
-            if (filesMap[subjectId]) { // already present in cache
+            if (!isNewUpload && filesMap[subjectId]) { 
                 setFiles(filesMap[subjectId]);
                 return;
             }
@@ -44,7 +48,7 @@ const Sidebar = memo(function Sidebar({
         };
 
         if (subjectId) loadFiles();
-    }, [user, subjectId]);
+    }, [user, subjectId, refreshTrigger]);
     
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -158,7 +162,12 @@ const Sidebar = memo(function Sidebar({
                             style={{color: sub.iconColor}}
                             >
                                 <span className="icon-wrapper"><FontAwesomeIcon icon={faFolderOpen} /></span>
-                                {(!collapsed || isMobile) && <span>{sub.name}</span>}
+
+                                {(!collapsed || isMobile) &&( 
+                                    <span className="sidebar-text-truncate">
+                                        {sub.name}
+                                    </span>
+                                )}
                             </div>
                         ))}
 
@@ -201,33 +210,33 @@ const Sidebar = memo(function Sidebar({
                                     {files.length === 0 ? (
                                         <div className="file-item empty">No files uploaded</div>
                                     ) : (
-                                        files.map((f, i) => (
-                                            <div key={i} className="file-item">
+                                        files.map((f) => (
+                                            <div key={f.stored_name} className="file-item">
 
-                                                <span className="file-name">{f.filename}</span>
+                                                <span className="file-name sidebar-text-truncate">{f.filename}</span>
                                                 
                                                 <button
                                                 className="delete-btn"
                                                 onClick={async (e) => {
                                                     e.stopPropagation();
                                                     
-                                                    setDeletingFile(f.filename);
+                                                    setDeletingFile(f.stored_name);
                                                     
-                                                    await deleteFile(f.filename, subjectId, user.uid);
+                                                    await deleteFile(f.stored_name, subjectId, user.uid);
                                                     
                                                     // update UI instantly
-                                                    setFiles(prev => prev.filter(file => file.filename !== f.filename));
+                                                    setFiles(prev => prev.filter(file => file.stored_name !== f.stored_name));
                                                     
                                                     // update cache too
                                                     setFilesMap(prev => ({
                                                         ...prev,
-                                                        [subjectId]: prev[subjectId].filter(file => file.filename !== f.filename)
+                                                        [subjectId]: prev[subjectId].filter(file => file.stored_name !== f.stored_name)
                                                     }));
                                                     
                                                     setDeletingFile(null);
                                                 }}
                                                 >
-                                                    {deletingFile === f.filename ? (
+                                                    {deletingFile === f.stored_name ? (
                                                         <div className="loader"></div>
                                                     ) : (
                                                         <FontAwesomeIcon icon={faTrash} />
@@ -249,7 +258,9 @@ const Sidebar = memo(function Sidebar({
                                     <div key={i} className="sidebar-item history">
                                         <span className="icon-wrapper"><History /></span>
                                         {(!collapsed || isMobile) && (
-                                            <span>{item.slice(0, 15)}...</span>
+                                            <span className="sidebar-text-truncate">
+                                                {item}
+                                            </span>
                                         )}
                                     </div>
                                 ))}

@@ -1,5 +1,6 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.concurrency import run_in_threadpool
 from langchain_community.document_loaders import PyPDFLoader
 from rag import process_pdf, ocr_image, ocr_pdf, generate_answer, generate_exam_blueprint, save_to_vector, delete_file_from_vectorstore
 from typing import List
@@ -155,9 +156,68 @@ async def delete_subject(subject_id: str, user: str):
     return {"message": "Subject not found in database"}
 
 
+# Helper function for the heavy ML stuff
+def run_heavy_ml(temp_file_path, file_ext, stored_name, subject, user):
+    if file_ext == "pdf":
+        loader = PyPDFLoader(temp_file_path)
+        documents = loader.load()
+        full_text = "".join([doc.page_content for doc in documents]).strip()
+        
+        if len(full_text) > 50:
+            process_pdf(temp_file_path, stored_name, subject, user) 
+        else:
+            print("pdf is not readable, switching to OCR")
+            text = ocr_pdf(temp_file_path)
+            if not text.strip(): raise Exception("OCR failed")
+            docs = [Document(page_content=text, metadata={"source": stored_name})]
+            save_to_vector(docs, stored_name, subject, user)
+    elif file_ext in ["png", "jpg", "jpeg"]:
+        print("Its an image, starting OCR")
+        text = ocr_image(temp_file_path)
+        if not text.strip(): raise Exception("OCR failed")
+        docs = [Document(page_content=text, metadata={"source": stored_name})]
+        save_to_vector(docs, stored_name, subject, user)
+
+# The Async Background Task
+async def process_and_log_background(temp_file_path: str, file_ext: str, filename: str, stored_name: str, subject: str, user: str):
+    try:
+        # 1. Run the heavy ML in a threadpool so the server doesn't freeze (Allows switching subjects!)
+        await run_in_threadpool(run_heavy_ml, temp_file_path, file_ext, stored_name,  subject, user)
+
+        # 2. It succeeded! Save to MongoDB history
+        chat_document = {
+            "subject_id": subject,
+            "user_id": user,
+            "question": f"📎 Uploaded file: {filename}",
+            "answer": f"✅ Successfully processed **{filename}**! It is now saved in my memory.",
+            "videos": [],
+            "timestamp": datetime.now()
+        }
+        await db["chats"].insert_one(chat_document)
+
+    except Exception as e:
+        print(f"❌ Background error for {filename}:", e)
+        # It failed! Save the error to history
+        error_document = {
+            "subject_id": subject,
+            "user_id": user,
+            "question": f"📎 Attempted to upload: {filename}",
+            "answer": f"❌ Failed to process **{filename}**. The file might be corrupted or too complex.",
+            "videos": [],
+            "timestamp": datetime.now()
+        }
+        await db["chats"].insert_one(error_document)
+        
+    finally:
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
+
+
 MAX_FILE_SIZE = 10 * 1024 * 1024
 @app.post("/upload")
 async def upload(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     user: str = Form(...),
     subject: str = Form(...)
@@ -204,55 +264,31 @@ async def upload(
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=f".{file_ext}")
     temp_file_path = temp_file.name
     
-    try:
-        # Write the content and explicitly close it to release the Windows lock!
-        temp_file.write(content)
-        temp_file.flush()
-        temp_file.close() 
+    # Write the content and explicitly close it to release the Windows lock!
+    temp_file.write(content)
+    temp_file.flush()
+    temp_file.close() 
+    # Trigger the new background task!
+    background_tasks.add_task(
+        process_and_log_background, 
+        temp_file_path, 
+        file_ext, 
+        file.filename, 
+        unique_name,
+        subject, 
+        user
+    )
 
-        if file_ext == "pdf":
-            loader = PyPDFLoader(temp_file_path)
-            documents = loader.load()
-            full_text = "".join([doc.page_content for doc in documents]).strip()
-            
-            if len(full_text) > 50:
-                print("✅ PDF is text-readable. Processing normally...")
-                process_pdf(temp_file_path, file.filename, subject, user) 
-            else:
-                print("⚠️ PDF contains images/handwriting. Switching to OCR...")
-                text = ocr_pdf(temp_file_path)
-                if not text.strip():
-                    raise Exception("OCR failed: No text extracted")
-                docs = [Document(page_content=text, metadata={"source": file.filename})]
-                save_to_vector(docs, file.filename, subject, user)
-
-        elif file_ext in ["png", "jpg", "jpeg"]:
-            text = ocr_image(temp_file_path)
-            if not text.strip():
-                raise Exception("OCR failed: No text extracted")
-            docs = [Document(page_content=text, metadata={"source": file.filename})]
-            save_to_vector(docs, file.filename, subject, user)
-
-        print("✅ Vector processing complete! Temp file destroyed.")
-
-    except Exception as e:
-        print("❌ Vector error:", e)
-        raise HTTPException(status_code=500, detail=str(e))
-        
-    finally:
-        # 2. Always manually delete the file when done, even if it crashes!
-        if os.path.exists(temp_file_path):
-            os.remove(temp_file_path)
-  
+    # Instantly release the user!
     return {"status": "uploaded", "filename": file.filename}
 
 @app.delete("/delete-file")
-async def delete_file(filename: str, subject: str, user: str):
+async def delete_file(stored_name: str, subject: str, user: str):
 
     file_doc = await db["files"].find_one({
         "subject_id": subject,
         "user_id": user,
-        "filename": filename
+        "stored_name": stored_name
     })
     if not file_doc:
         return {"error": "File not found"}
@@ -264,7 +300,7 @@ async def delete_file(filename: str, subject: str, user: str):
                 file_doc["cloudinary_public_id"],
                 resource_type=file_doc.get("resource_type", "image") # Defaults to image if not found
             )
-            print(f"🗑️ Deleted {filename} from Cloudinary.")
+            print(f"🗑️ Deleted {stored_name} from Cloudinary.")
         except Exception as e:
             print(f"⚠️ Cloudinary delete error: {e}")
     
@@ -273,11 +309,11 @@ async def delete_file(filename: str, subject: str, user: str):
     await db["files"].delete_one({
         "subject_id": subject,
         "user_id": user,
-        "filename": filename
+        "stored_name": stored_name
     })
 
     #delete from pinecone
-    delete_file_from_vectorstore(filename, subject, user)
+    delete_file_from_vectorstore(stored_name, subject, user)
 
     return {"message": "File deleted"}
 
