@@ -106,8 +106,7 @@
     left: 0;
 
     background: rgba(37, 37, 37, 0.444);
-    backdrop-filter: blur(18px) saturate(180%);
-    backdrop-filter: blur(18px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
 
     border: 1px solid #3d1a43;
     border-radius: 16px;
